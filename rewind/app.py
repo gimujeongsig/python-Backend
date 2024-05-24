@@ -29,6 +29,38 @@ def post():
     })
     return 'complete', 200
     
+@app.route('/follow', methods=['POST'])
+def follow():
+    payload = request.json
+    userId = int(payload['id'])
+    userIdtoFollow = int(payload['follow'])
+
+    if userId not in app.users or userIdtoFollow not in app.users:
+        return '사용자가 존재하지 않습니다.', 400
+
+    user = app.users[userId]
+    if user.get('follow'):
+        user['follow'].append(userIdtoFollow)
+        user['follow'] = list(set(user['follow']))
+    else:
+        user['follow'] = [userIdtoFollow]
+    return jsonify(user)
+
+
+@app.route("/unfollow", methods=['POST'])
+def unfollow():
+    payload = request.json
+    userID = int(payload['id'])
+    userIdtofollow = int(payload['unfollow'])
+    if (userID or userIdtofollow) not in app.users:
+        return '사용자가 존재하지 않습니다.'
+    user = app.users[userID]
+    if user.get('follow'):
+        user['follow'].remove(userIdtofollow)
+
+    return jsonify(user)
+
+
 
 if __name__ == '__main__':
     app.run()
