@@ -23,7 +23,7 @@ def post():
     if len(msg) > 300:
         return '300 over',400
 
-    app.post.append({
+    app.posts.append({
         'user_id' : userID,
         'post' : msg
     })
