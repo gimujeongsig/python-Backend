@@ -12,5 +12,23 @@ def signUp():
     app.idCnt += 1
     return jsonify(newUser)
 
+@app.route('/post', methods=['POST'])
+def post():
+    payload = request.json
+    userID = int(payload['id'])
+    msg = payload['msg']
+
+    if userID not in app.users:
+        return 'user not found', 400
+    if len(msg) > 300:
+        return '300 over',400
+
+    app.post.append({
+        'user_id' : userID,
+        'post' : msg
+    })
+    return 'complete', 200
+    
+
 if __name__ == '__main__':
     app.run()
