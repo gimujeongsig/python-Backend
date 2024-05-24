@@ -56,8 +56,10 @@ def unfollow():
         return '사용자가 존재하지 않습니다.'
     user = app.users[userID]
     if user.get('follow'):
-        user['follow'].remove(userIdtofollow)
-
+        try:    user['follow'].remove(userIdtofollow)
+        except: pass
+    else:
+        user['follow'] = []
     return jsonify(user)
 
 
